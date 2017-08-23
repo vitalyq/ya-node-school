@@ -1,0 +1,21 @@
+{
+  "name": "ya-node-school",
+  "version": "0.1.0",
+  "description": "Yandex Node.js school admission assignment",
+  "license": "MIT",
+  "repository": "vitalyq/ya-node-school",
+  "author": "Vitaly Kuznetsov",
+  "private": true,
+  "scripts": {
+    "start": "http-server",
+    "test": "eslint index.js"
+  },
+  "dependencies": {
+    "http-server": "^0.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb-base": "^11.3.2",
+    "eslint-plugin-import": "^2.7.0"
+  }
+}
