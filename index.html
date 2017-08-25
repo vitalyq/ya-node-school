@@ -9,18 +9,20 @@
   </head>
   <body>
     <!-- Main Form -->
-    <form id="myForm" action="/success.json">
+    <form id="myForm" action="api/success.json">
       <label for="fio">ФИО</label>
-      <input name="fio" id="fio">
+      <input name="fio" id="fio" placeholder="Гоголь Николай Васильевич">
       <label for="email">Email</label>
-      <input name="email" id="email">
+      <input name="email" id="email" placeholder="example@yandex.ru">
       <label for="phone">Телефон</label>
-      <input name="phone" id="phone">
+      <input name="phone" id="phone" placeholder="+7(000)111-22-33">
       <button id="submitButton">Отправить</button>
     </form>
     <div id="resultContainer"></div>
     <!-- End Main Form -->
 
+    <script src="vendor/redux.min.js"></script>
+    <script src="vendor/redux-thunk.min.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

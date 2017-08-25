@@ -1,3 +1,15 @@
 body {
   background: lightyellow;
 }
+
+.success {
+  border: 1px solid green;
+}
+
+.progress {
+  border: 1px solid orange;
+}
+
+.error {
+  border: 1px solid red;
+}
