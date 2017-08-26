@@ -35,7 +35,7 @@
       ),
 
       validateEmail: text => (
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[^@]+/.test(text) &&
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[^@]+$/.test(text) &&
         checkDomain(text)
       ),
 
@@ -90,7 +90,13 @@
       }
 
       // All subsequent fetches send cached data
-      const { fio, email, phone } = state;
+      const search = new URLSearchParams(
+        Object.entries({
+          fio: state.fio,
+          email: state.email,
+          phone: state.phone,
+        }),
+      );
 
       dispatch({
         type: 'SUBMIT_FORM_REQUEST',
@@ -105,12 +111,12 @@
             await new Promise(resolve => setTimeout(resolve, retryTimeout));
           }
 
+          // Retrieve form action
+          // It's a bad thing to do, but required to comply with the spec
+          const action = document.getElementById('myForm').action;
+
           // Send form data
-          const { formAction } = getState();
-          const search = new URLSearchParams(
-            Object.entries({ fio, email, phone }),
-          );
-          const response = await fetch(`${formAction}?${search}`);
+          const response = await fetch(`${action}?${search}`);
           if (!response.ok) {
             throw Error('Network response was not ok.');
           }
@@ -200,7 +206,7 @@
     };
 
     // Subscribe to state updates
-    let nextState = {};
+    let nextState = store.getState();
     store.subscribe(() => {
       const prevState = nextState;
       nextState = store.getState();
@@ -272,7 +278,7 @@
     },
 
     setData(data) {
-      if (data && typeof data === 'object') {
+      if (typeof data === 'object' && data) {
         dispatch(
           actions.editForm(data.fio, data.email, data.phone),
         );
