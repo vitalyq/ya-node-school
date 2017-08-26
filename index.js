@@ -51,16 +51,25 @@
     checkValidation: state => (
       state.fioIsValid && state.emailIsValid && state.phoneIsValid
     ),
+
+    getInvalidFields: state => (
+      [
+        !state.fioIsValid ? 'fio' : null,
+        !state.emailIsValid ? 'email' : null,
+        !state.phoneIsValid ? 'phone' : null,
+      ].filter(item => Boolean(item))
+    ),
   };
 
   // Actions
   const actions = {
-    editForm: (fio, email, phone) => ({
-      type: 'EDIT_FORM',
-      fio,
-      email,
-      phone,
-    }),
+    editForm: (fio, email, phone) => (
+      Object.assign({ type: 'EDIT_FORM' },
+        fio !== undefined ? { fio } : null,
+        email !== undefined ? { email } : null,
+        phone !== undefined ? { phone } : null,
+      )
+    ),
 
     validateForm: () => (dispatch, getState) => {
       const { fio, email, phone } = getState();
@@ -72,35 +81,67 @@
       });
     },
 
-    submitForm: () => (dispatch, getState) => {
+    submitForm: () => async (dispatch, getState) => {
       // Validate the form and check the result
       dispatch(actions.validateForm());
       const state = getState();
-      const isValid = selectors.checkValidation(state);
-      if (!isValid) {
-        return Promise.resolve();
+      if (!selectors.checkValidation(state)) {
+        return;
       }
+
+      // All subsequent fetches send cached data
+      const { fio, email, phone } = state;
 
       dispatch({
         type: 'SUBMIT_FORM_REQUEST',
         formIsSubmitted: true,
       });
 
-      const { formAction } = state;
-      return fetch(formAction).then((response) => {
-        if (response.ok) {
-          return response.json();
+      try {
+        for (;;) {
+          // Wait until timeout expires
+          const { retryTimeout } = getState();
+          if (retryTimeout > 0) {
+            await new Promise(resolve => setTimeout(resolve, retryTimeout));
+          }
+
+          // Send form data
+          const { formAction } = getState();
+          const search = new URLSearchParams(
+            Object.entries({ fio, email, phone }),
+          );
+          const response = await fetch(`${formAction}?${search}`);
+          if (!response.ok) {
+            throw Error('Network response was not ok.');
+          }
+
+          // Parse response and update the state
+          const data = await response.json();
+          dispatch({
+            type: 'SUBMIT_FORM_SUCCESS',
+            formStatus: data.status,
+            errorMessage: data.reason || '',
+            retryTimeout: data.timeout || 0,
+          });
+
+          if (data.status !== 'progress') {
+            return;
+          }
         }
-        throw Error('Network response was not ok.');
-      }).then(({ status, reason, timeout }) => {
+      } catch (error) {
         dispatch({
-          type: 'SUBMIT_FORM_SUCCESS',
-          formStatus: status,
-          errorMessage: reason || '',
-          retryTimeout: timeout || 0,
+          type: 'SUBMIT_FORM_FAILURE',
+          formStatus: 'error',
+          errorMessage: error.message || 'Something went wrong.',
         });
-      });
+      }
     },
+
+    // Optional
+    setFormAction: action => ({
+      type: 'SET_FORM_ACTION',
+      formAction: action,
+    }),
   };
 
   // Reducer
@@ -127,12 +168,36 @@
     };
   }());
 
-  // Form component
-  const formComponent = (form, store) => {
-    // Selectors
-    const fio = form.fio;
-    const email = form.email;
-    const phone = form.phone;
+  // Components
+  const myFormComponent = (store) => {
+    // Select elements
+    const form = document.getElementById('myForm');
+    const { fio, email, phone, submitButton } = form;
+    const resultContainer = document.getElementById('resultContainer');
+
+    // DOM mutations depending on state changes
+    const domMutations = {
+      fio: (val) => { fio.value = val; },
+      email: (val) => { email.value = val; },
+      phone: (val) => { phone.value = val; },
+      fioIsValid: (val) => { fio.classList.toggle('error', !val); },
+      emailIsValid: (val) => { email.classList.toggle('error', !val); },
+      phoneIsValid: (val) => { phone.classList.toggle('error', !val); },
+      formAction: (val) => { form.action = val; },
+      formIsSubmitted: (val) => { submitButton.disabled = val; },
+      formStatus: (val, state) => {
+        let resultText = '';
+        if (val === 'success') {
+          resultText = 'Success';
+        } else if (val === 'error') {
+          resultText = state.errorMessage;
+        }
+        resultContainer.textContent = resultText;
+        resultContainer.classList.toggle('success', val === 'success');
+        resultContainer.classList.toggle('error', val === 'error');
+        resultContainer.classList.toggle('progress', val === 'progress');
+      },
+    };
 
     // Subscribe to state updates
     let nextState = {};
@@ -140,29 +205,84 @@
       const prevState = nextState;
       nextState = store.getState();
 
-      fio.classList.toggle('error', !nextState.fioIsValid);
-      email.classList.toggle('error', !nextState.emailIsValid);
-      phone.classList.toggle('error', !nextState.phoneIsValid);
+      // Call DOM mutations if relevant parts of the state have changed
+      Object.keys(domMutations)
+        .filter(key => prevState[key] !== nextState[key])
+        .forEach(key => domMutations[key](nextState[key], nextState));
     });
 
-    // Event handlers
-    const handleInput = () => {
+    // Attach event handlers
+    form.addEventListener('input', () => {
       store.dispatch(
         actions.editForm(fio.value, email.value, phone.value),
       );
-    };
+    });
 
-    const handleSubmit = (event) => {
+    form.addEventListener('submit', (event) => {
       event.preventDefault();
       store.dispatch(actions.submitForm());
-    };
+    });
+  };
+
+  const debugFormComponent = (store) => {
+    // Select elements
+    const form = document.getElementById('debugForm');
 
     // Attach event handlers
-    fio.addEventListener('input', handleInput);
-    email.addEventListener('input', handleInput);
-    phone.addEventListener('input', handleInput);
-    form.addEventListener('submit', handleSubmit);
+    form.addEventListener('click', ({ target }) => {
+      if (target.name === 'action') {
+        store.dispatch(actions.setFormAction(target.value));
+      }
+    });
+
+    form.enterValidData.addEventListener('click', () => {
+      store.dispatch(actions.editForm(
+        'Гоголь Николай Васильевич',
+        'example@yandex.ru',
+        '+7(000)111-22-33',
+      ));
+    });
+
+    form.enterInvalidData.addEventListener('click', () => {
+      store.dispatch(actions.editForm(
+        'Марк Твен',
+        'example@gmail.com',
+        '+7(000)333-77-01',
+      ));
+    });
+
+    form.resetForm.addEventListener('click', () => {
+      store.dispatch(actions.editForm('', '', ''));
+    });
   };
+
+  // Global API
+  const initAPI = ({ dispatch, getState }) => ({
+    validate() {
+      dispatch(actions.validateForm());
+      return {
+        isValid: selectors.checkValidation(getState()),
+        errorFields: selectors.getInvalidFields(getState()),
+      };
+    },
+
+    getData() {
+      const { fio, email, phone } = getState();
+      return { fio, email, phone };
+    },
+
+    setData(data) {
+      if (data && typeof data === 'object') {
+        dispatch(
+          actions.editForm(data.fio, data.email, data.phone),
+        );
+      }
+    },
+
+    submit() {
+      dispatch(actions.submitForm());
+    },
+  });
 
   // Store setup
   const configureStore = () => (
@@ -174,30 +294,9 @@
 
   // Initialize the app
   const store = configureStore();
-  formComponent(
-    document.getElementById('myForm'),
-    store,
-  );
-
-  // Global API
-  const MyForm = {
-    validate() {
-
-    },
-
-    getData() {
-
-    },
-
-    setData(data) {
-
-    },
-
-    submit() {
-
-    },
-  };
+  myFormComponent(store);
+  debugFormComponent(store);
 
   // Exports
-  window.MyForm = MyForm;
+  window.MyForm = initAPI(store);
 }(window));

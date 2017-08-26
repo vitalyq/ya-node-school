@@ -1,3 +1,8 @@
+.error {
+  border: 1px solid red;
+}
+
+/* Optional styles */
 body {
   background: lightyellow;
 }
@@ -10,6 +15,7 @@ body {
   border: 1px solid orange;
 }
 
-.error {
-  border: 1px solid red;
+#resultContainer {
+  border: 1px solid black;
+  height: 20px;
 }

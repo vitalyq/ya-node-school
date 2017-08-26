@@ -7,7 +7,8 @@
     "sourceType": "script"
   },
   "rules": {
-    "no-param-reassign": ["error", { "props": false }]
+    "no-param-reassign": ["error", { "props": false }],
+    "no-await-in-loop": "off"
   },
   "globals": {
     "Redux": false,
