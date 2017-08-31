@@ -24,12 +24,11 @@ body {
 #debugForm {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
 }
 
-#debugForm {
-  justify-content: space-between;
+#myForm {
+  align-items: center;
+  justify-content: center;
 }
 
 #myForm > *,
@@ -119,6 +118,7 @@ input {
   border-top: 1px dashed #a9a9a9;
   margin-top: 40px;
   padding-top: 20px;
+  justify-content: space-between;
 }
 
 #debugForm input {
@@ -126,7 +126,6 @@ input {
 }
 
 #debugForm button {
-  align-self: stretch;
   margin-top: 16px;
 }
 
