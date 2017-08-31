@@ -12,7 +12,7 @@
     <section class="container">
       <!-- My Form -->
       <form id="myForm" action="api/success.json">
-        <h2>Контактные данные</h2>
+        <h1>Контактные данные</h1>
         <label for="fio">ФИО</label>
         <input name="fio" id="fio" placeholder="Гоголь Николай Васильевич">
         <label for="email">Email</label>
@@ -20,15 +20,15 @@
         <label for="phone">Телефон</label>
         <input name="phone" id="phone" placeholder="+7(000)111-22-33">
         <button id="submitButton">Отправить</button>
-        <h3>Результат:</h3>
+        <h2>Результат:</h2>
         <div id="resultContainer"></div>
       </form>
       <!-- End My Form -->
 
       <!-- Debug Form -->
       <form id="debugForm">
-        <h2>Настройки формы</h2>
-        <h3>URL формы</h3>
+        <h1>Настройки формы</h1>
+        <h2>URL формы</h2>
         <label>
           <input type="radio" name="action" value="api/success.json" checked>
           api/success.json
@@ -41,7 +41,7 @@
           <input type="radio" name="action" value="api/error.json">
           api/error.json
         </label>
-        <h3>Тестовые данные</h3>
+        <h2>Тестовые данные</h2>
         <button type="button" name="enterValidData">Ввести верные данные</button>
         <button type="button" name="enterInvalidData">Ввести неверные данные</button>
         <button type="button" name="resetForm">Очистить форму</button>
