@@ -74,7 +74,7 @@ input {
   .container {
     border: 1px solid #c5c5c5;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    padding: 60px 90px 80px;
+    padding: 60px 90px 90px;
     margin: auto;
     max-width: 692px;
   }
@@ -141,7 +141,7 @@ input {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px 0;
+    margin: 12px 0;
   }
 
   #debugForm input {
