@@ -5,38 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <title>Тестовое задание</title>
+    <link rel="stylesheet" href="vendor/normalize.css">
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <!-- Main Form -->
-    <form id="myForm" action="api/success.json">
-      <label for="fio">ФИО</label>
-      <input name="fio" id="fio" placeholder="Гоголь Николай Васильевич">
-      <label for="email">Email</label>
-      <input name="email" id="email" placeholder="example@yandex.ru">
-      <label for="phone">Телефон</label>
-      <input name="phone" id="phone" placeholder="+7(000)111-22-33">
-      <button id="submitButton">Отправить</button>
-    </form>
-    <div id="resultContainer"></div>
-    <!-- End Main Form -->
+    <section class="container">
+      <!-- Main Form -->
+      <form id="myForm" action="api/success.json">
+        <h2>Контактные данные</h2>
+        <label for="fio">ФИО</label>
+        <input name="fio" id="fio" placeholder="Гоголь Николай Васильевич">
+        <label for="email">Email</label>
+        <input name="email" id="email" placeholder="example@yandex.ru">
+        <label for="phone">Телефон</label>
+        <input name="phone" id="phone" placeholder="+7(000)111-22-33">
+        <button id="submitButton">Отправить</button>
+        <h3>Результат:</h3>
+        <div id="resultContainer"></div>
+      </form>
+      <!-- End Main Form -->
 
-    <!-- Debug Form -->
-    <h2>Настройки формы</h2>
-    <form id="debugForm">
-      <h3>URL для отправки данных формы</h3>
-      <input type="radio" name="action" id="success" value="api/success.json" checked>
-      <label for="success">api/success.json</label>
-      <input type="radio" name="action" id="progress" value="api/progress.json">
-      <label for="progress">api/progress.json</label>
-      <input type="radio" name="action" id="error" value="api/error.json">
-      <label for="error">api/error.json</label>
-      <h3>Заполнить форму тестовыми данными</h3>
-      <button type="button" name="enterValidData">Ввести верные данные</button>
-      <button type="button" name="enterInvalidData">Ввести неверные данные</button>
-      <button type="button" name="resetForm">Очистить форму</button>
-    </form>
-    <!-- End Debug Form -->
+      <!-- Debug Form -->
+      <form id="debugForm">
+        <h2>Настройки формы</h2>
+        <h3>URL формы</h3>
+        <input type="radio" name="action" id="success" value="api/success.json" checked>
+        <label for="success">api/success.json</label>
+        <input type="radio" name="action" id="progress" value="api/progress.json">
+        <label for="progress">api/progress.json</label>
+        <input type="radio" name="action" id="error" value="api/error.json">
+        <label for="error">api/error.json</label>
+        <h3>Тестовые данные</h3>
+        <button type="button" name="enterValidData">Ввести верные данные</button>
+        <button type="button" name="enterInvalidData">Ввести неверные данные</button>
+        <button type="button" name="resetForm">Очистить форму</button>
+      </form>
+      <!-- End Debug Form -->
+    </section>
 
     <script src="vendor/redux.min.js"></script>
     <script src="vendor/redux-thunk.min.js"></script>

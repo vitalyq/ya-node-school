@@ -1,21 +1,152 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  font: 16px/20px arial, 'liberation sans', 'dejavu sans', sans-serif;
+}
+
+.container {
+  padding: 14px 14px 30px;
+  min-width: 250px;
+}
+
+/* Main Form */
+#myForm,
+#debugForm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#debugForm {
+  justify-content: space-between;
+}
+
+#myForm > *,
+#debugForm > * {
+  flex: 1 1 100%;
+  padding: 4px;
+}
+
+h2 {
+  text-align: center;
+}
+
+h2,
+h3 {
+  margin: 0.5em 0;
+}
+
+#myForm h2 {
+  margin-bottom: 27px;
+}
+
+input {
+  border: 1px solid #a9a9a9;
+}
+
 .error {
   border: 1px solid red;
 }
 
-/* Optional styles */
-body {
-  background: lightyellow;
+#myForm button {
+  margin-top: 16px;
 }
 
-.success {
-  border: 1px solid green;
+@media (min-width: 768px) {
+  body {
+    display: flex;
+    min-height: 100vh;
+    padding: 30px;
+  }
+
+  .container {
+    border: 1px solid #c5c5c5;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    padding: 60px 90px 80px;
+    margin: auto;
+    max-width: 692px;
+  }
+
+  #myForm label {
+    flex: 1 1 20%;
+    margin: 4px 0;
+  }
+
+  #myForm input {
+    flex: 1 1 80%;
+  }
+
+  #myForm button {
+    flex: 0 1 32%;
+  }
 }
 
-.progress {
-  border: 1px solid orange;
-}
-
+/* Main Form - Result Container */
 #resultContainer {
-  border: 1px solid black;
-  height: 20px;
+  background: #f3f3f3;
+  border: 1px solid #a9a9a9;
+}
+
+#resultContainer::before {
+  content: "\200B";
+}
+
+#resultContainer.error {
+  border-color: red;
+}
+
+#resultContainer.success {
+  border-color: green;
+}
+
+#resultContainer.progress {
+  border-color: orange;
+}
+
+/* Debug Form */
+#debugForm {
+  border-top: 1px dashed #a9a9a9;
+  margin-top: 40px;
+  padding-top: 20px;
+}
+
+#debugForm input {
+  flex: 1 1 40px;
+}
+
+#debugForm label {
+  flex: 1 1 calc(100% - 40px);
+}
+
+#debugForm button {
+  align-self: stretch;
+  margin-top: 16px;
+}
+
+#debugForm button:first-of-type {
+  margin-top: 6px;
+}
+
+@media (min-width: 768px) {
+  #debugForm input {
+    flex: 1 1 30px;
+  }
+
+  #debugForm label {
+    flex: 1 1 calc(33.333333% - 30px);
+  }
+
+  #debugForm button {
+    margin-top: 6px;
+    flex: 0 1 32%;
+  }
 }
