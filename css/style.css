@@ -80,7 +80,8 @@ input {
   border: 1px solid red;
 }
 
-[role="tooltip"] {
+#emailTip,
+#phoneTip {
   margin: 4px 0 8px;
   padding: 4px;
   font-style: italic;
@@ -114,7 +115,8 @@ input {
     flex: 1 1 80%;
   }
 
-  [role="tooltip"] {
+  #emailTip,
+  #phoneTip {
     margin: 0 0 8px 20%;
   }
 
