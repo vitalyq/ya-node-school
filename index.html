@@ -11,41 +11,53 @@
   <body>
     <section class="container">
       <!-- My Form -->
-      <form id="myForm" action="api/success.json">
+      <section class="primary-form">
         <h1>Контактные данные</h1>
-        <label for="fio">ФИО</label>
-        <input name="fio" id="fio" placeholder="Гоголь Николай Васильевич">
-        <label for="email">Email</label>
-        <input name="email" id="email" placeholder="example@yandex.ru">
-        <label for="phone">Телефон</label>
-        <input name="phone" id="phone" placeholder="+7(000)111-22-33">
-        <button id="submitButton">Отправить</button>
+        <form id="myForm" action="api/success.json">
+          <div>
+            <label for="fio">ФИО</label>
+            <input name="fio" id="fio" placeholder="Гоголь Николай Васильевич">
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" aria-describedby="email-tip" placeholder="example@yandex.ru">
+            <div role="tooltip" id="email-tip">Поддерживаются адреса в доменах ya.ru, yandex.ru, yandex.ua, yandex.by, yandex.kz, yandex.com</div>
+          </div>
+          <div>
+            <label for="phone">Телефон</label>
+            <input type="tel" name="phone" id="phone" aria-describedby="phone-tip" placeholder="+7(000)111-22-33">
+            <div role="tooltip" id="phone-tip">Телефон в формате +7(999)999-99-99, сумма всех цифр не более 30</div>
+          </div>
+          <button id="submitButton">Отправить</button>
+        </form>
         <h2>Результат:</h2>
         <div id="resultContainer"></div>
-      </form>
+      </section>
       <!-- End My Form -->
 
       <!-- Debug Form -->
-      <form id="debugForm">
+      <section class="secondary-form">
         <h1>Настройки формы</h1>
-        <h2>URL формы</h2>
-        <label>
-          <input type="radio" name="action" value="api/success.json" checked>
-          api/success.json
-        </label>
-        <label>
-          <input type="radio" name="action" value="api/progress.json">
-          api/progress.json
-        </label>
-        <label>
-          <input type="radio" name="action" value="api/error.json">
-          api/error.json
-        </label>
-        <h2>Тестовые данные</h2>
-        <button type="button" name="enterValidData">Ввести верные данные</button>
-        <button type="button" name="enterInvalidData">Ввести неверные данные</button>
-        <button type="button" name="resetForm">Очистить форму</button>
-      </form>
+        <form id="debugForm">
+          <h2>URL формы</h2>
+          <div>
+            <input type="radio" id="success" name="action" value="api/success.json" checked>
+            <label for="success">api/success.json</label>
+          </div>
+          <div>
+            <input type="radio" id="progress" name="action" value="api/progress.json">
+            <label for="progress">api/progress.json</label>
+          </div>
+          <div>
+            <input type="radio" id="error" name="action" value="api/error.json">
+            <label for="error">api/error.json</label>
+          </div>
+          <h2>Тестовые данные</h2>
+          <button type="button" name="enterValidData">Ввести верные данные</button>
+          <button type="button" name="enterInvalidData">Ввести неверные данные</button>
+          <button type="button" name="resetForm">Очистить форму</button>
+        </form>
+      </section>
       <!-- End Debug Form -->
     </section>
 

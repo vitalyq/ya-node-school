@@ -20,20 +20,40 @@ body {
 }
 
 /* My Form */
+.primary-form,
+.secondary-form,
 #myForm,
 #debugForm {
   display: flex;
   flex-wrap: wrap;
-}
-
-#myForm {
-  align-items: center;
   justify-content: center;
 }
 
+.primary-form > *,
+.secondary-form > *,
 #myForm > *,
 #debugForm > * {
   flex: 1 1 100%;
+}
+
+#myForm > div,
+#debugForm > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#myForm label,
+#myForm input {
+  flex: 1 1 100%;
+}
+
+h1,
+h2,
+label,
+input,
+button,
+#resultContainer {
   padding: 4px;
 }
 
@@ -48,7 +68,7 @@ h2 {
   margin: 0.5em 0;
 }
 
-#myForm h1 {
+.primary-form h1 {
   margin-bottom: 27px;
 }
 
@@ -60,8 +80,14 @@ input {
   border: 1px solid red;
 }
 
+[role="tooltip"] {
+  margin: 4px 0 8px;
+  padding: 4px;
+  font-style: italic;
+}
+
 #myForm button {
-  margin-top: 16px;
+  margin-top: 6px;
 }
 
 @media (min-width: 768px) {
@@ -86,6 +112,10 @@ input {
 
   #myForm input {
     flex: 1 1 80%;
+  }
+
+  [role="tooltip"] {
+    margin: 0 0 8px 20%;
   }
 
   #myForm button {
@@ -116,15 +146,18 @@ input {
 }
 
 /* Debug Form */
-#debugForm {
+.secondary-form {
   border-top: 1px dashed #a9a9a9;
   margin-top: 40px;
   padding-top: 20px;
+}
+
+#debugForm {
   justify-content: space-between;
 }
 
 #debugForm input {
-  margin: 0 10px 0 4px;
+  margin: 0 6px 0 8px;
 }
 
 #debugForm button {
@@ -136,16 +169,10 @@ input {
 }
 
 @media (min-width: 768px) {
-  #debugForm label {
+  #debugForm > div {
     flex: 1 1 33.333333%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     margin: 12px 0;
-  }
-
-  #debugForm input {
-    margin-left: 0;
+    justify-content: center;
   }
 
   #debugForm button {
